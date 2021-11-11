@@ -1,6 +1,6 @@
 // this #ifndef stops this filese
 // from being included mored than
-// once by the compiler. 
+// once by the compiler. SEE IF USEFULL OR NOT
 //#ifndef _MOTORS_H
 #define _MOTORS_H
 
@@ -13,20 +13,22 @@
 #define BACKWARD 1
 
 
-// Class to operate the BUZZER
 class Motors_c {
   public:
-     float L_speedo = 0;
-     float R_speedo = 0;
+     float L_speed = 0;
+     float R_speed = 0;
+
     // Constructor, must exist.
     Motors_c() {
-      pinMode(6, OUTPUT );
+        pinMode(6, OUTPUT );
+        analogWrite( L_PWM_PIN, 0);
+        analogWrite( R_PWM_PIN, 0);
     } 
 
     void L_go() {
 
-        if (L_speedo < 0){
-            // Set initial direction for l
+        if (L_speed < 0){
+            // Set direction depending on signe of L_speed
             digitalWrite( L_DIR_PIN, BACKWARD );
             }
             
@@ -34,12 +36,12 @@ class Motors_c {
             digitalWrite( L_DIR_PIN, FORWARD );
             }
             
-        if (abs(L_speedo) >= 255) {
-            L_speedo = 255 * L_speedo/abs(L_speedo);
-            analogWrite( L_PWM_PIN, L_speedo);
+        if (abs(L_speed) >= 255) { //if value above 255 or under -255, set it to +-255
+            L_speed = 255 * L_speed/abs(L_speed);
+            analogWrite( L_PWM_PIN, L_speed);
         }
-        else {
-        analogWrite( L_PWM_PIN, int(abs(L_speedo)) % 255 );
+        else { //else just set the speed
+        analogWrite( L_PWM_PIN, int(abs(L_speed)));
         }    
         }
 
@@ -47,25 +49,26 @@ class Motors_c {
 
     void R_go() {
 
-        if (R_speedo < 0){
-            // Set initial direction for l
+        if (R_speed < 0){
+            // Set direction depending on signe of L_speed
             digitalWrite( R_DIR_PIN, BACKWARD );
             }
             
         else{
-            // Set initial direction for l
+            
             digitalWrite( R_DIR_PIN, FORWARD );
             }
 
-        if (abs(R_speedo) >= 255) {
-            R_speedo = 255 * R_speedo/abs(R_speedo);
-            analogWrite( R_PWM_PIN, R_speedo);
+        if (abs(R_speed) >= 255) { //if value above 255 or under -255, set it to +-255
+            R_speed = 255 * R_speed/abs(R_speed);
+            analogWrite( R_PWM_PIN, R_speed);
         }
-        else{
-            analogWrite( R_PWM_PIN, int(abs(R_speedo)) % 255);
+        else{ //else just set the speed
+            analogWrite( R_PWM_PIN, int(abs(R_speed)));
         }
 
         }
+
 
     void update_motors(){
         L_go();
@@ -75,5 +78,5 @@ class Motors_c {
 };
 
 
-
+//same as line 1-3
 //#endif
