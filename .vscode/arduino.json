@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:leonardo",
     "port": "COM9",
-    "sketch": "TestK\\TestK.ino"
+    "sketch": "main\\main.ino"
 }

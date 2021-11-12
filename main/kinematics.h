@@ -2,7 +2,8 @@ class kinematics{
   public:
     float RWidth = 41.5 ;//distance from P
     float WWidth = 16.25;//radius of wheel
-    float L_phi,R_phi,XLocal,ThetaC,XGlobal,YGlobal,ThetaGlobal,ThetaD;
+    float XGlobal = 0;
+    float L_phi,R_phi,XLocal,ThetaC,YGlobal,ThetaGlobal,ThetaD,ThetaInBetweenRangeD;
     int Range;
 
     unsigned long T = millis();
@@ -13,14 +14,15 @@ class kinematics{
 
   void locate(){
       PT = millis();
-      if (PT-T > 20){
+      if (PT-T > 15){
 
           dT = PT-T;
+          T = millis();
           L_phi = float((count_e1 - old_count_e1)/358.3);
           R_phi = float((count_e0 - old_count_e0)/358.3); //e0 = Rgiht
           old_count_e1 = count_e1;
           old_count_e0 = count_e0;
-          T = millis();
+          
 
           XLocal = 2.0*PI*WWidth*(R_phi+L_phi)/2;
           ThetaC = 2*PI*(WWidth/(2*RWidth))*(L_phi-R_phi); //e0 : right side
@@ -28,15 +30,26 @@ class kinematics{
           YGlobal = YGlobal + XLocal * sin(ThetaGlobal);
           XGlobal = XGlobal + XLocal * cos(ThetaGlobal);
           ThetaD = ThetaGlobal*(180/PI);//in degrees
-         
-          if(ThetaGlobal >6.28319){
-            ThetaGlobal = ThetaGlobal - 6.28319;
+          ThetaInBetweenRangeD = ThetaD;
+          if(ThetaGlobal >PI){
+            ThetaInBetweenRangeD = ThetaInBetweenRangeD - 360;
           }
-          else if(ThetaGlobal<-6.28319){
-            ThetaGlobal = ThetaGlobal + 6.28319;
+          else if(ThetaGlobal<-PI){
+            ThetaInBetweenRangeD = ThetaInBetweenRangeD + 360;
           }
           Range = sqrt((XGlobal*XGlobal)+(YGlobal*YGlobal)); 
       }
+
+
+    Serial.print(XGlobal);
+    Serial.print(",");
+    Serial.print(YGlobal);
+    Serial.print(",");
+    Serial.println(ThetaGlobal);
+
+
+
+
   }
 
  
