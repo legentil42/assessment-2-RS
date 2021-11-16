@@ -31,26 +31,49 @@ class kinematics{
           XGlobal = XGlobal + XLocal * cos(ThetaGlobal);
           ThetaD = ThetaGlobal*(180/PI);//in degrees
           ThetaInBetweenRangeD = ThetaD;
+
           if(ThetaGlobal >PI){
             ThetaInBetweenRangeD = ThetaInBetweenRangeD - 360;
           }
           else if(ThetaGlobal<-PI){
             ThetaInBetweenRangeD = ThetaInBetweenRangeD + 360;
           }
+
           Range = sqrt((XGlobal*XGlobal)+(YGlobal*YGlobal)); 
       }
 
-
+/*
     Serial.print(XGlobal);
     Serial.print(",");
     Serial.print(YGlobal);
     Serial.print(",");
     Serial.println(ThetaGlobal);
-
+*/
 
 
 
   }
 
+    void reset_kinematics() {
+
+    XGlobal = 0;
+    L_phi =0;
+
+    R_phi=0;
+    XLocal= 0;
+    ThetaC= 0;
+    YGlobal= 0;
+    ThetaGlobal= 0;
+    ThetaD= 0;
+    ThetaInBetweenRangeD= 0;
+    Range= 0;
+
+    T = millis();
+    PT = millis();
+    old_count_e1= 0;
+    old_count_e0= 0;
+    count_e0= 0;
+    count_e1= 0;
+    }
  
   };
