@@ -10,14 +10,13 @@ class BumpSensor_c {
   public:
 
     // Constructor, must exist.
-    BulpSensor_c() {
+    BumpSensor_c() {
 
     }
     #define BUMP_SENSOR_L 4
     #define BUMP_SENSOR_R 5
     #define EMIT 11
     #define NUMBER_SENSORS 1
-    #define time_out_val 3000
 
     float e_line;
     float W_right;
@@ -75,10 +74,6 @@ class BumpSensor_c {
       // is still registering as "HIGH".
       while(flag_L == LOW || flag_R == LOW) {
         time_out=micros();
-        if(time_out-start_time > time_out_val){
-          Serial.println("**ABORT**");
-          break;
-        }   
         if( digitalRead( BUMP_SENSOR_L ) == LOW){
           if(flag_L == LOW){
             flag_L = HIGH;

@@ -1,5 +1,6 @@
 {
     "board": "arduino:avr:leonardo",
-    "port": "COM7",
-    "sketch": "main\\main.ino"
+    "port": "COM9",
+    "sketch": "dev\\dev.ino",
+    "output": "../ArduinoOutput"
 }

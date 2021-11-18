@@ -37,11 +37,11 @@ class Motors_c {
             }
             
         if (abs(L_speed) >= 255) { //if value above 255 or under -255, set it to +-255
-            L_speed = 255 * L_speed/abs(L_speed);
+            L_speed = 255;
             analogWrite( L_PWM_PIN, L_speed);
         }
         else { //else just set the speed
-        analogWrite( L_PWM_PIN, int(abs(L_speed)));
+        analogWrite( L_PWM_PIN, abs(L_speed));
         }    
         }
 
@@ -60,11 +60,11 @@ class Motors_c {
             }
 
         if (abs(R_speed) >= 255) { //if value above 255 or under -255, set it to +-255
-            R_speed = 255 * R_speed/abs(R_speed);
+            R_speed = 255;
             analogWrite( R_PWM_PIN, R_speed);
         }
         else{ //else just set the speed
-            analogWrite( R_PWM_PIN, int(abs(R_speed)));
+            analogWrite( R_PWM_PIN, abs(R_speed));
         }
 
         }
@@ -75,8 +75,14 @@ class Motors_c {
         R_go();
     }
 
+
+
+    void stop_motors() {
+    L_speed = 0;
+    R_speed = 0;
+
+    update_motors(); 
+    }
 };
-
-
 //same as line 1-3
 //#endif
