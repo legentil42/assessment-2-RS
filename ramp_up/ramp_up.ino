@@ -38,14 +38,15 @@ void setup() {
     //Buzzer.buzz(1517,100);
     kine.locate();//calculte where you are
     turn();
-    go_to_X_Y(5000,0);//in millimeter
+    go_to_X_Y(2000,0);//in millimeter
+    /*
     go_to_X_Y(2000,1000);
     go_to_X_Y(3000,1000);
     go_to_X_Y(3000,-1000);
     go_to_X_Y(4000,-1000);
     go_to_X_Y(4000,0);
     go_to_X_Y(6000,0);
-
+*/
     
 }
 
@@ -174,7 +175,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
 
     float goal_angle = atan2(Y_goal-kine.YGlobal,X_goal-kine.XGlobal);//find goal angle
     while (range > THRESHOLD_REACH_X_Y) {//while distance from goal is bigger than threshold
-        //bump.readBump();
+        bump.readBump();
         if (bump.L_val >1000 || bump.R_val >1000) {//generic bump behaviour
             float forward_angle = kine.ThetaD;
             go_straight_for_distance(50,true);

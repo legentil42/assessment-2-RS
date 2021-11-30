@@ -26,7 +26,7 @@ class kinematics{
 
           XLocal = 2.0*PI*WWidth*(R_phi+L_phi)/2;
           ThetaC = 2*PI*(WWidth/(2*RWidth))*(L_phi-R_phi); //e0 : right side
-          ThetaGlobal = ThetaGlobal + ThetaC;//in radians
+          ThetaGlobal +=  ThetaC;//in radians
           YGlobal = YGlobal + XLocal * sin(ThetaGlobal);
           XGlobal = XGlobal + XLocal * cos(ThetaGlobal);
           ThetaD = ThetaGlobal*(180/PI);//in degrees

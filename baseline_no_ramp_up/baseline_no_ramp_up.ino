@@ -7,8 +7,8 @@
 #define BAUD_RATE 9600
 
 #define ROTATION_ANGLE_THRESHOLD 1 //degree
-#define ROTATION_SPEED 80 //PWM for turning on the spot                                  low : 20 // medium : 60 // HIGH : 110
-#define FORWARD_SPEED 60 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
+#define ROTATION_SPEED 110 //PWM for turning on the spot                                  low : 20 // medium : 60 // HIGH : 110
+#define FORWARD_SPEED 140 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
 #define GO_STRAIGHT_K_p 20 //20 before //K_p for the P controller of go straight dist function          low 20 med 40 high 60?
 #define ROTATION_K_p 0.4 //K_p for the P controller of go straight dist function
 #define THRESHOLD_REACH_X_Y 20
@@ -33,7 +33,7 @@ void setup() {
     Buzzer.buzz(1911,100);
     Buzzer.buzz(1517,100);
     kine.locate();
-    go_to_X_Y(300,0);
+    go_to_X_Y(2000,0);
 
     
 }
@@ -141,7 +141,7 @@ void go_straight_for_distance(float desired_dist, bool reverse){
 
     }
 
-    }
+    
 
 
 
@@ -155,6 +155,8 @@ void go_to_X_Y(float X_goal, float Y_goal) {
 
     while (sqrt(sq(X_goal-kine.XGlobal)+sq(Y_goal-kine.YGlobal)) > THRESHOLD_REACH_X_Y) {
         bump.readBump();
+
+
         if (bump.L_val >1000 || bump.R_val >1000) {
             float forward_angle = kine.ThetaD;
 
