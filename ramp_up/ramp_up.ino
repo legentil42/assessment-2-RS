@@ -7,8 +7,8 @@
 #define BAUD_RATE 9600
 
 #define ROTATION_ANGLE_THRESHOLD 1 //degree
-#define ROTATION_SPEED 60 //PWM for turning on the spot                                  low : 20 // medium : 30 // HIGH : 40
-#define FORWARD_SPEED 140 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
+#define ROTATION_SPEED 20 //PWM for turning on the spot                                  low : 20 // medium : 30 // HIGH : 40
+#define FORWARD_SPEED 30 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
 #define GO_STRAIGHT_K_p 20 //20 before //K_p for the P controller of go straight dist function          low 20 med 40 high 60?
 #define ROTATION_K_p 0.4 //K_p for the P controller of go straight dist function
 #define THRESHOLD_REACH_X_Y 20
@@ -38,7 +38,7 @@ void setup() {
     //Buzzer.buzz(1517,100);
     kine.locate();//calculte where you are
     turn();
-    go_to_X_Y(2000,0);//in millimeter
+    go_to_X_Y(1000,0);//in millimeter
     /*
     go_to_X_Y(2000,1000);
     go_to_X_Y(3000,1000);

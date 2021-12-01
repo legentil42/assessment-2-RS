@@ -35,7 +35,6 @@
             "includePath": [
                 "D:\\Programmes\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
                 "D:\\Programmes\\Arduino\\hardware\\arduino\\avr\\variants\\leonardo",
-                "C:\\Users\\legen\\Documents\\Arduino\\libraries\\Kalman_Filter_Library",
                 "D:\\Programmes\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src",
                 "C:\\Users\\legen\\Documents\\Arduino\\libraries\\LSM6",
                 "C:\\Users\\legen\\Documents\\Arduino\\libraries\\LIS3MDL",
