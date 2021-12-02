@@ -19,11 +19,11 @@ LSM6 imu;
 LIS3MDL mag;
 
 #define ROTATION_ANGLE_THRESHOLD 1 //degree
-#define ROTATION_SPEED 20 //PWM for turning on the spot                                  low : 20 // medium : 60 // HIGH : 110
+#define ROTATION_SPEED 20 //PWM for turning on the spot      ALWAYS 20
 #define FORWARD_SPEED 140 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
 #define GO_STRAIGHT_K_p 20 //20 before //K_p for the P controller of go straight dist function          low 20 med 40 high 60?
 #define ROTATION_K_p 0.4 //K_p for the P controller of go straight dist function
-#define THRESHOLD_REACH_X_Y 20
+#define THRESHOLD_REACH_X_Y 20 //INCREASED BACK
 #define LP_acc_mag 0.5
 #define PI 3.1415
 float acc_mag_stationary = 0;
@@ -40,7 +40,7 @@ void setup() {
     // Wait for stable connection, report reset.
     delay(1000);
     Serial.println("***RESET***");
-    //Buzzer.buzz(1911,100);
+    Buzzer.buzz(1911,100);
     setupEncoder0();
     setupEncoder1();
     delay(500);
@@ -62,10 +62,10 @@ void setup() {
     imu.enableDefault();
     calibrate_acc_mag_stationary();
     calculate_offset_gyroZ();
-    //Buzzer.buzz(1517,50);
+    Buzzer.buzz(1517,50);
     kine.locate();
-    
-    go_to_X_Y(1000,0);
+    go_to_X_Y(500,0);
+   
 }
 
 
@@ -93,11 +93,12 @@ void loop(){
     
     
         compute_new_theta();
+        /*
         Motors.L_speed = -theta_combined*2;
         Motors.R_speed = theta_combined*2;
         Motors.update_motors();
 
-
+*/
  }
 
 void compute_new_theta(){  
@@ -200,7 +201,7 @@ void update_theta(){
 
             }
 
-            if (abs(gyr_angleZ-kine.ThetaD) > 20) {
+            if (abs(gyr_angleZ-kine.ThetaD) > 40) {
                 kine.ThetaGlobal = (gyr_angleZ) *(PI/180);
                 Buzzer.buzz(1517,20);
             }
@@ -245,11 +246,11 @@ void go_to_X_Y(float X_goal, float Y_goal) {
     float goal_angle = atan2(Y_goal-kine.YGlobal,X_goal-kine.XGlobal);//find goal angle
     while (range > THRESHOLD_REACH_X_Y) {//while distance from goal is bigger than threshold
     
-        bump.readBump();
+        //bump.readBump();
         kine.locate();//update position
         compute_new_theta();
         Calculate();
-
+/*
         if (bump.L_val >1000 || bump.R_val >1000) {//generic bump behaviour
             float forward_angle = -theta_combined;
             go_straight_for_distance(50,true);
@@ -257,7 +258,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
             go_straight_for_distance(100,false);
             rotation(forward_angle);
         }
-
+*/
         
         goal_angle = atan2(Y_goal-kine.YGlobal,X_goal-kine.XGlobal);//update angle
         range = sqrt(sq(X_goal-kine.XGlobal)+sq(Y_goal-kine.YGlobal));
@@ -275,7 +276,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
         Motors.R_speed = FORWARD_SPEED - 1*(Ang); 
         //Motors.L_speed = FORWARD_SPEED + GO_STRAIGHT_K_p*(Ang);
         //Motors.R_speed = FORWARD_SPEED + GO_STRAIGHT_K_p*(Ang);
-               
+           /*    
         if(range < Elimit){
             Motors.L_speed = (Motors.L_speed) * (range/(limit*2.5));
             Motors.R_speed = (Motors.R_speed) * (range/(limit*2.5));
@@ -296,7 +297,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
             }
         }
         else{}
-  
+  */
         Motors.update_motors();
         
         if(Ang > 10){
@@ -304,21 +305,23 @@ void go_to_X_Y(float X_goal, float Y_goal) {
         }
     }
     Motors.stop_motors();
+
 }
 
 void turn(){
-  while(abs(Ang) > 0.1){
+  while(abs(Ang) > 0.5){ ///INCREASED BC IT WAS NOT WORKING
       kine.locate();
       Calculate();
+      compute_new_theta();
       if(Ang >0){
         //turn right
-        Motors.L_speed = FORWARD_SPEED/5;
-        Motors.R_speed = -FORWARD_SPEED/5;
+        Motors.L_speed = ROTATION_SPEED;
+        Motors.R_speed = -ROTATION_SPEED;
       }
       else if(Ang < 0){
         //turn left
-        Motors.L_speed = -FORWARD_SPEED/5;
-        Motors.R_speed = FORWARD_SPEED/5;
+        Motors.L_speed = -ROTATION_SPEED;
+        Motors.R_speed = ROTATION_SPEED;
       }
       else{
         Motors.L_speed = 0;

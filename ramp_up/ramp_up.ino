@@ -5,10 +5,12 @@
 #include "kinematics.h"
 #include "bumper.h"
 #define BAUD_RATE 9600
-
+float XG,YG;
+int VTheta;
+float Glob, Ang;
 #define ROTATION_ANGLE_THRESHOLD 1 //degree
-#define ROTATION_SPEED 20 //PWM for turning on the spot                                  low : 20 // medium : 30 // HIGH : 40
-#define FORWARD_SPEED 30 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
+#define ROTATION_SPEED 20 //PWM for turning on the spot                             low : 20 // medium : 30 // HIGH : 40
+#define FORWARD_SPEED 140 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
 #define GO_STRAIGHT_K_p 20 //20 before //K_p for the P controller of go straight dist function          low 20 med 40 high 60?
 #define ROTATION_K_p 0.4 //K_p for the P controller of go straight dist function
 #define THRESHOLD_REACH_X_Y 20
@@ -18,9 +20,7 @@ Motors_c Motors;
 kinematics kine;
 BumpSensor_c bump;
 
-float XG,YG;
-int VTheta;
-float Glob, Ang;
+
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -29,16 +29,17 @@ void setup() {
     // Wait for stable connection, report reset.
     delay(1000);
     Serial.println("***RESET***");
+     Buzzer.buzz(1911,100);
     setupEncoder0();
     setupEncoder1();
     delay(500);
     bump.initialise();
 
-    //Buzzer.buzz(1911,100);
-    //Buzzer.buzz(1517,100);
+    Buzzer.buzz(1911,100);
+    Buzzer.buzz(1517,100);
     kine.locate();//calculte where you are
     turn();
-    go_to_X_Y(1000,0);//in millimeter
+    go_to_X_Y(500,0);//in millimeter
     /*
     go_to_X_Y(2000,1000);
     go_to_X_Y(3000,1000);
@@ -157,6 +158,7 @@ void go_straight_for_distance(float desired_dist, bool reverse){
 
 
 
+
 void go_to_X_Y(float X_goal, float Y_goal) {
     XG = X_goal;
     YG = Y_goal;
@@ -196,11 +198,9 @@ void go_to_X_Y(float X_goal, float Y_goal) {
             goal_angle -= 2*PI;
         }
 
-
         Motors.L_speed = FORWARD_SPEED + 1*(Ang);
         Motors.R_speed = FORWARD_SPEED - 1*(Ang); 
-        //Motors.L_speed = FORWARD_SPEED + GO_STRAIGHT_K_p*(Ang);
-        //Motors.R_speed = FORWARD_SPEED + GO_STRAIGHT_K_p*(Ang);
+
                
         if(range < Elimit){
             Motors.L_speed = (Motors.L_speed) * (range/(limit*2.5));
@@ -224,27 +224,29 @@ void go_to_X_Y(float X_goal, float Y_goal) {
         else{}
   
         Motors.update_motors();
+
         Calculate();
         if(Ang > 10){
           turn();
         }
     }
+
     Motors.stop_motors();
 }
 
 void turn(){
-  while(abs(Ang) > 0.1){
+  while(abs(Ang) > 0.5){
       kine.locate();
       Calculate();
       if(Ang >0){
         //turn right
-        Motors.L_speed = FORWARD_SPEED/5;
-        Motors.R_speed = -FORWARD_SPEED/5;
+        Motors.L_speed = ROTATION_SPEED;
+        Motors.R_speed = -ROTATION_SPEED;
       }
       else if(Ang < 0){
         //turn left
-        Motors.L_speed = -FORWARD_SPEED/5;
-        Motors.R_speed = FORWARD_SPEED/5;
+        Motors.L_speed = -ROTATION_SPEED;
+        Motors.R_speed = ROTATION_SPEED;
       }
       else{
         Motors.L_speed = 0;

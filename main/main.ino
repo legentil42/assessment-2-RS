@@ -11,7 +11,7 @@
 #define FORWARD_SPEED 60 // PWM for going forward                                        low : 30  // medium : 80 // HIGH : 140
 #define GO_STRAIGHT_K_p 20 //20 before //K_p for the P controller of go straight dist function          low 20 med 40 high 60?
 #define ROTATION_K_p 0.4 //K_p for the P controller of go straight dist function
-#define THRESHOLD_REACH_X_Y 20
+#define THRESHOLD_REACH_X_Y 10
 
 Beep_c Buzzer;
 Motors_c Motors;
