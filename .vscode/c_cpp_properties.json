@@ -35,6 +35,9 @@
             "includePath": [
                 "D:\\Programmes\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
                 "D:\\Programmes\\Arduino\\hardware\\arduino\\avr\\variants\\leonardo",
+                "D:\\Programmes\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src",
+                "C:\\Users\\legen\\Documents\\Arduino\\libraries\\LSM6",
+                "C:\\Users\\legen\\Documents\\Arduino\\libraries\\LIS3MDL",
                 "d:\\programmes\\arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\7.3.0\\include",
                 "d:\\programmes\\arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\7.3.0\\include-fixed",
                 "d:\\programmes\\arduino\\hardware\\tools\\avr\\avr\\include"

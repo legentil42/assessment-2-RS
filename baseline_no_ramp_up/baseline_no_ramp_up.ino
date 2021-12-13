@@ -39,6 +39,9 @@ void setup() {
     kine.locate();//calculte where you are
     //turn();
     go_to_X_Y(500,0);//in millimeter
+    go_to_X_Y(500,500);
+    go_to_X_Y(1000,500);
+    
     /*
     go_to_X_Y(2000,1000);
     go_to_X_Y(3000,1000);
@@ -176,6 +179,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
 
     float goal_angle = atan2(Y_goal-kine.YGlobal,X_goal-kine.XGlobal);//find goal angle
     while (range > THRESHOLD_REACH_X_Y) {//while distance from goal is bigger than threshold
+       /*
         bump.readBump();
         if (bump.L_val >1000 || bump.R_val >1000) {//generic bump behaviour
             float forward_angle = kine.ThetaD;
@@ -184,7 +188,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
             go_straight_for_distance(100,false);
             rotation(forward_angle);
         }
-
+*/
         kine.locate();//update position
         goal_angle = atan2(Y_goal-kine.YGlobal,X_goal-kine.XGlobal);//update angle
         range = sqrt(sq(X_goal-kine.XGlobal)+sq(Y_goal-kine.YGlobal));
@@ -203,7 +207,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
 
         Calculate();
         
-        if(Ang > 10){
+        if(abs(Ang) > 10){
           turn();
         }
         

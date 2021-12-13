@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:leonardo",
-    "port": "COM8",
-    "sketch": "ramp_up\\ramp_up.ino",
+    "port": "COM7",
+    "sketch": "no_ramp_up_new_theta\\no_ramp_up_new_theta.ino",
     "output": "../ArduinoOutput"
 }

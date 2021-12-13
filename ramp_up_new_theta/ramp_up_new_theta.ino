@@ -64,7 +64,7 @@ void setup() {
     calculate_offset_gyroZ();
     Buzzer.buzz(1517,50);
     kine.locate();
-    go_to_X_Y(500,0);
+    go_to_X_Y(2000,0);
    
 }
 
@@ -87,7 +87,7 @@ float theta_weight;
 float theta_combined = 0;
 
 #define weight 0.5
-#define LOW_PASS 0.5
+#define LOW_PASS 0.8
 
 void loop(){
 
@@ -131,7 +131,7 @@ void calibrate_acc_mag_stationary(){
     float calib_start_time = millis();
     reading_start_time = millis();
 
-    while (millis()-calib_start_time < 2000) {
+    while (millis()-calib_start_time < 400) {
 
         if (millis()-reading_start_time > 10) {
 
@@ -180,7 +180,7 @@ void update_theta(){
 
             gyrX = imu.g.x*8.75 /1000; //degree per second
             gyrY = imu.g.y*8.75 /1000;
-            gyrZ = -( (imu.g.z*8.75 / 1000) - Sum_gyrZ) ;
+            gyrZ = -( (imu.g.z*8.75 / 1000) - Sum_gyrZ)*LOW_PASS + gyrZ*(1-LOW_PASS) ;
 
 
             if (abs(gyrZ)>2){
@@ -293,7 +293,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
   
         Motors.update_motors();
         
-        if(Ang > 10){
+        if(abs(Ang) > 10){
           turn();
         }
     }

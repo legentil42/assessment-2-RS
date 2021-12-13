@@ -28,7 +28,7 @@ LIS3MDL mag;
 #define PI 3.1415
 float acc_mag_stationary = 0;
 bool stationary;
-Beep_c Buzzer;
+//Beep_c Buzzer;
 Motors_c Motors;
 kinematics kine;
 BumpSensor_c bump;
@@ -40,7 +40,7 @@ void setup() {
     // Wait for stable connection, report reset.
     delay(1000);
     Serial.println("***RESET***");
-    Buzzer.buzz(1911,100);
+    //Buzzer.buzz(1911,100);
     setupEncoder0();
     setupEncoder1();
     delay(500);
@@ -62,9 +62,9 @@ void setup() {
     imu.enableDefault();
     calibrate_acc_mag_stationary();
     calculate_offset_gyroZ();
-    Buzzer.buzz(1517,50);
+    //Buzzer.buzz(1517,50);
     kine.locate();
-    go_to_X_Y(500,0);
+    //go_to_X_Y(2000,0);
    
 }
 
@@ -87,7 +87,7 @@ float theta_weight;
 float theta_combined = 0;
 
 #define weight 0.5
-#define LOW_PASS 0.5
+#define LOW_PASS 0.8
 
 void loop(){
     
@@ -138,7 +138,7 @@ void calibrate_acc_mag_stationary(){
     float calib_start_time = millis();
     reading_start_time = millis();
 
-    while (millis()-calib_start_time < 2000) {
+    while (millis()-calib_start_time < 500) {
 
         if (millis()-reading_start_time > 10) {
 
@@ -187,7 +187,7 @@ void update_theta(){
 
             gyrX = imu.g.x*8.75 /1000; //degree per second
             gyrY = imu.g.y*8.75 /1000;
-            gyrZ = -( (imu.g.z*8.75 / 1000) - Sum_gyrZ) ;
+            gyrZ = -( (imu.g.z*8.75 / 1000) - Sum_gyrZ)*LOW_PASS + gyrZ*(1-LOW_PASS) ;
 
 
             if (abs(gyrZ)>2){
@@ -203,7 +203,7 @@ void update_theta(){
 
             if (abs(gyr_angleZ-kine.ThetaD) > 40) {
                 kine.ThetaGlobal = (gyr_angleZ) *(PI/180);
-                Buzzer.buzz(1517,20);
+                //Buzzer.buzz(1517,20);
             }
 
             alpha = atan2(accX,sqrt(accY*accY+accZ*accZ))*180/PI;
@@ -300,7 +300,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
   */
         Motors.update_motors();
         
-        if(Ang > 10){
+        if(abs(Ang) > 10){
           turn();
         }
     }

@@ -226,7 +226,7 @@ void go_to_X_Y(float X_goal, float Y_goal) {
         Motors.update_motors();
 
         Calculate();
-        if(Ang > 10){
+        if(abs(Ang) > 10){
           turn();
         }
     }
